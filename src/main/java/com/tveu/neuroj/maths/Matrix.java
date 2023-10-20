@@ -1,28 +1,29 @@
 package com.tveu.neuroj.maths;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class Matrix<T extends Number> {
+public class Matrix implements Iterable<Double> {
 
     private int rows;
 
     private int cols;
 
-    protected final List<T> matrix;
+    protected final List<Double> matrix;
 
-    public Matrix(int rows, int cols){
+    public Matrix(int rows, int cols, double[][] arr) {
+
         this.rows = rows;
         this.cols = cols;
 
-        matrix = new ArrayList<>(rows*cols);
+        matrix = new ArrayList<>(rows * cols);
+
+        Arrays.stream(arr)
+                .flatMapToDouble(Arrays::stream)
+                .forEach(matrix::add);
     }
 
-    public Matrix(int rows, int cols, T[][] arr) {
-        this(rows, cols);
-
-        Arrays.stream(arr).flatMap(Arrays::stream).forEach(matrix::add);
+    public Matrix(int rows, int cols) {
+        this(rows, cols, new double[rows][cols]);
     }
 
     public int getRows() {
@@ -33,7 +34,7 @@ public class Matrix<T extends Number> {
         return cols;
     }
 
-    public T getValue(int row, int col) {
+    public double getValue(int row, int col) {
 
         int index = getIndex(row, col);
         outOfBounceCheck(index);
@@ -41,7 +42,7 @@ public class Matrix<T extends Number> {
         return matrix.get(index);
     }
 
-    public void setValue(int row, int col, T value){
+    public void setValue(int row, int col, double value) {
 
         int index = getIndex(row, col);
         outOfBounceCheck(index);
@@ -49,8 +50,8 @@ public class Matrix<T extends Number> {
         matrix.set(index, value);
     }
 
-    public void transpose(){
-        List<T> transposedMatrix = new ArrayList<>(matrix);
+    public void transpose() {
+        List<Double> transposedMatrix = new ArrayList<>(matrix);
 
         int transposedRows = cols;
         int transposedCols = rows;
@@ -64,25 +65,84 @@ public class Matrix<T extends Number> {
             }
         }
 
-       rows = transposedRows;
+        rows = transposedRows;
         cols = transposedCols;
     }
 
-    public boolean canMultiply(Matrix<T> other){
+
+
+    public boolean canMultiply(Matrix other) {
         return rows == other.cols;
     }
 
-    public boolean canAdd(Matrix<T> other){
+    public boolean canAdd(Matrix other) {
         return (rows == other.rows && cols == other.cols);
     }
 
-    private int getIndex(int row, int col){
+    private int getIndex(int row, int col) {
         return cols * row + col;
     }
+
     private void outOfBounceCheck(int index) {
 
         if (index > cols * rows) {
-            throw new ArrayIndexOutOfBoundsException();
+            throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds of " + cols * rows);
         }
+    }
+
+    @Override
+    public Iterator<Double> iterator() {
+        return new MatrixIterator();
+    }
+
+    private class MatrixIterator implements Iterator<Double> {
+        private int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < matrix.size();
+        }
+
+        @Override
+        public Double next() {
+            if (!hasNext()) {
+                throw new IllegalStateException("No more elements in the matrix");
+            }
+            return matrix.get(currentIndex++);
+        }
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < rows; i++) {
+
+            for (int j = 0; j < cols; j++) {
+                stringBuilder.append(this.getValue(i, j));
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+
+        return "Matrix {" + "\n" +
+                "rows= " + rows +
+                ", cols= " + cols + ",\n" +
+                "matrix= \n" + stringBuilder +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Matrix matrix1 = (Matrix) o;
+        return rows == matrix1.rows && cols == matrix1.cols && Objects.equals(matrix, matrix1.matrix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rows, cols, matrix);
     }
 }
