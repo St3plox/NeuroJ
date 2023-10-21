@@ -10,13 +10,17 @@ public class ELUFunction extends AbstractParametricFunction {
     public double getOutput(double totalInput) {
 
         output = (totalInput >= 0) ? totalInput : slope * (Math.exp(totalInput) - 1);
+        isOutputSet = true;
         return output;
     }
 
     @Override
     public double getDerivative(double totalInput) {
 
-        getOutput(totalInput);
+        if (!isOutputSet) {
+            getOutput(totalInput);
+        }
+
         return (totalInput >= 0) ? 1 : output + slope;
     }
 }
