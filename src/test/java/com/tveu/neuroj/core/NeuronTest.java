@@ -1,5 +1,6 @@
 package com.tveu.neuroj.core;
 
+import com.tveu.neuroj.core.neuron.Neuron;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

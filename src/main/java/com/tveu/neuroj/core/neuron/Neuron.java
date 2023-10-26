@@ -1,35 +1,47 @@
-package com.tveu.neuroj.core;
+package com.tveu.neuroj.core.neuron;
 
+import com.tveu.neuroj.core.Connection;
+import com.tveu.neuroj.core.Layer;
 import com.tveu.neuroj.core.function.AbstractActivationFunction;
+import com.tveu.neuroj.core.function.SigmoidFunction;
 
+import java.awt.im.InputContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Neuron {
 
-    private double delta;
+    protected double delta;
 
-    private double output;
+    protected double output;
 
-    private double totalInput;
+    protected double totalInput;
 
-    List<Connection> inputConnections;
+    protected List<Connection> inputConnections;
 
-    List<Connection> outputConnections;
+    protected List<Connection> outputConnections;
 
-    private final Layer parentLayer;
+    protected final Layer parentLayer;
 
-    private AbstractActivationFunction abstractActivationFunction;
+    protected final AbstractActivationFunction abstractActivationFunction;
 
 
-    public Neuron(Layer parentLayer) {
+    public Neuron(Layer parentLayer, AbstractActivationFunction abstractActivationFunction) {
         inputConnections = new ArrayList<>();
         outputConnections = new ArrayList<>();
+
         delta = 0;
         totalInput = 0;
         output = 0;
+
+        this.abstractActivationFunction = abstractActivationFunction;
         this.parentLayer = parentLayer;
+    }
+
+
+    public Neuron(Layer parentLayer) {
+        this(parentLayer, new SigmoidFunction());
     }
     public double getDelta() {
         return delta;
@@ -64,10 +76,6 @@ public class Neuron {
         this.delta = delta;
     }
 
-    public void setOutput(double output) {
-        this.output = output;
-    }
-
     public void setTotalInput(double totalInput) {
         this.totalInput = totalInput;
     }
@@ -80,10 +88,20 @@ public class Neuron {
         this.outputConnections = outputConnections;
     }
 
-    public void setAbstractActivationFunction(AbstractActivationFunction abstractActivationFunction) {
-        this.abstractActivationFunction = abstractActivationFunction;
+
+    public double generateOutput(){
+
+        generateTotalInput();
+
+        output = abstractActivationFunction.getOutput(totalInput);
+        return output;
     }
 
+    public void generateTotalInput() {
+        inputConnections.forEach(inputConnections ->
+                totalInput += inputConnections.getWeightedInput()
+        );
+    }
     public void addOutputConnection(Connection connection) {
 
         if(connection.getFromNeuron() != this)
@@ -95,6 +113,7 @@ public class Neuron {
         toNeuron.addInputConnection(connection);
     }
 
+
     public void addInputConnection(Connection connection) {
 
         if (connection.getToNeuron() != this)
@@ -103,7 +122,6 @@ public class Neuron {
 
         inputConnections.add(connection);
     }
-
 
     @Override
     public boolean equals(Object o) {

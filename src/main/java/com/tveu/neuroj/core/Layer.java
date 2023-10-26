@@ -1,12 +1,15 @@
 package com.tveu.neuroj.core;
 
+import com.tveu.neuroj.core.function.AbstractActivationFunction;
+import com.tveu.neuroj.core.neuron.Neuron;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class Layer implements Iterable<Neuron> {
 
-    protected String layerLabel;
+    protected String label;
 
     protected final List<Neuron> neurons;
 
@@ -30,12 +33,12 @@ public class Layer implements Iterable<Neuron> {
         return neurons.get(index);
     }
 
-    public String getLayerLabel() {
-        return layerLabel;
+    public String getLabel() {
+        return label;
     }
 
-    public void setLayerLabel(String layerLabel) {
-        this.layerLabel = layerLabel;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public void removeNeuronAt(int index){
@@ -76,6 +79,7 @@ public class Layer implements Iterable<Neuron> {
     public Iterator<Neuron> iterator() {
         return new LayerIterator();
     }
+
 
     private class LayerIterator implements Iterator<Neuron> {
         private final Iterator<Neuron> neuronIterator = neurons.iterator();

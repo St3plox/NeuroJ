@@ -1,5 +1,7 @@
 package com.tveu.neuroj.core;
 
+import com.tveu.neuroj.core.neuron.Neuron;
+
 import java.util.Objects;
 
 public class Connection {
