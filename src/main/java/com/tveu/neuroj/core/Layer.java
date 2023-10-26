@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Layer implements Iterable<Neuron> {
 
+    protected String layerLabel;
+
     protected final List<Neuron> neurons;
 
     public Layer() {
@@ -26,6 +28,14 @@ public class Layer implements Iterable<Neuron> {
 
     public Neuron getNeuronAt(int index){
         return neurons.get(index);
+    }
+
+    public String getLayerLabel() {
+        return layerLabel;
+    }
+
+    public void setLayerLabel(String layerLabel) {
+        this.layerLabel = layerLabel;
     }
 
     public void removeNeuronAt(int index){
