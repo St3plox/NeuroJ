@@ -5,7 +5,6 @@ import com.tveu.neuroj.core.Layer;
 import com.tveu.neuroj.core.function.AbstractActivationFunction;
 import com.tveu.neuroj.core.function.SigmoidFunction;
 
-import java.awt.im.InputContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +42,7 @@ public class Neuron {
     public Neuron(Layer parentLayer) {
         this(parentLayer, new SigmoidFunction());
     }
+
     public double getDelta() {
         return delta;
     }
@@ -89,7 +89,7 @@ public class Neuron {
     }
 
 
-    public double generateOutput(){
+    public double generateOutput() {
 
         generateTotalInput();
 
@@ -102,9 +102,10 @@ public class Neuron {
                 totalInput += inputConnections.getWeightedInput()
         );
     }
+
     public void addOutputConnection(Connection connection) {
 
-        if(connection.getFromNeuron() != this)
+        if (connection.getFromNeuron() != this)
             throw new IllegalArgumentException("In output connection fromNeuron must be this");
 
         outputConnections.add(connection);

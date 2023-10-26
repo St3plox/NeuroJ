@@ -1,6 +1,5 @@
 package com.tveu.neuroj.core;
 
-import com.tveu.neuroj.core.function.AbstractActivationFunction;
 import com.tveu.neuroj.core.neuron.Neuron;
 
 import java.util.ArrayList;
@@ -25,11 +24,12 @@ public class Layer implements Iterable<Neuron> {
             neurons.add(neuron);
         }
     }
+
     public List<Neuron> getNeurons() {
         return new ArrayList<>(neurons);
     }
 
-    public Neuron getNeuronAt(int index){
+    public Neuron getNeuronAt(int index) {
         return neurons.get(index);
     }
 
@@ -41,7 +41,7 @@ public class Layer implements Iterable<Neuron> {
         this.label = label;
     }
 
-    public void removeNeuronAt(int index){
+    public void removeNeuronAt(int index) {
         neurons.remove(index);
     }
 
@@ -49,13 +49,13 @@ public class Layer implements Iterable<Neuron> {
         neurons.add(neuron);
     }
 
-    public void clear(){
+    public void clear() {
         neurons.clear();
     }
 
-    public void connectAllNeuronsTo(Layer layer, Weight weight){
-        for(Neuron neuron : this){
-            for(Neuron anotherLayerNeuron : layer){
+    public void connectAllNeuronsTo(Layer layer, Weight weight) {
+        for (Neuron neuron : this) {
+            for (Neuron anotherLayerNeuron : layer) {
 
                 Connection connection = new Connection(neuron, anotherLayerNeuron, weight);
                 neuron.addOutputConnection(connection);
@@ -63,16 +63,15 @@ public class Layer implements Iterable<Neuron> {
         }
     }
 
-    public void connectAllNeuronsTo(Layer layer){
-        for(Neuron neuron : this){
-            for(Neuron anotherLayerNeuron : layer){
+    public void connectAllNeuronsTo(Layer layer) {
+        for (Neuron neuron : this) {
+            for (Neuron anotherLayerNeuron : layer) {
 
                 Connection connection = new Connection(neuron, anotherLayerNeuron);
                 neuron.addOutputConnection(connection);
             }
         }
     }
-
 
 
     @Override

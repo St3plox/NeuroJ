@@ -14,7 +14,7 @@ public class Connection {
 
     public Connection(Neuron fromNeuron, Neuron toNeuron) {
 
-        if(fromNeuron.getParentLayer() == toNeuron.getParentLayer()){
+        if (fromNeuron.getParentLayer() == toNeuron.getParentLayer()) {
             throw new IllegalArgumentException("Neurons from the same layer cannot be connected");
         }
 
