@@ -2,11 +2,12 @@ package com.tveu.neuroj.core;
 
 import com.tveu.neuroj.core.neuron.Neuron;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Layer implements Iterable<Neuron> {
+public class Layer implements Iterable<Neuron>, Serializable {
 
     protected String label;
 

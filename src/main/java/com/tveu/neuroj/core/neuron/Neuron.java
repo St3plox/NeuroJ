@@ -9,33 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Neuron {
+public class Neuron extends AbstractNeuron {
 
     protected double delta;
 
     protected double output;
 
-    protected double totalInput;
-
     protected List<Connection> inputConnections;
 
     protected List<Connection> outputConnections;
 
-    protected final Layer parentLayer;
-
-    protected final AbstractActivationFunction abstractActivationFunction;
-
-
     public Neuron(Layer parentLayer, AbstractActivationFunction abstractActivationFunction) {
+        super(parentLayer, abstractActivationFunction);
+
         inputConnections = new ArrayList<>();
         outputConnections = new ArrayList<>();
-
-        delta = 0;
-        totalInput = 0;
-        output = 0;
-
-        this.abstractActivationFunction = abstractActivationFunction;
-        this.parentLayer = parentLayer;
     }
 
 
@@ -43,41 +31,17 @@ public class Neuron {
         this(parentLayer, new SigmoidFunction());
     }
 
-    public double getDelta() {
-        return delta;
-    }
-
     public double getOutput() {
         return output;
     }
 
-    public double getTotalInput() {
-        return totalInput;
-    }
 
     public List<Connection> getInputConnections() {
-        return new ArrayList<>(inputConnections);
+        return inputConnections;
     }
 
     public List<Connection> getOutputConnections() {
-        return new ArrayList<>(outputConnections);
-    }
-
-    public Layer getParentLayer() {
-        return parentLayer;
-    }
-
-    public AbstractActivationFunction getAbstractActivationFunction() {
-        return abstractActivationFunction;
-    }
-
-
-    public void setDelta(double delta) {
-        this.delta = delta;
-    }
-
-    public void setTotalInput(double totalInput) {
-        this.totalInput = totalInput;
+        return outputConnections;
     }
 
     public void setInputConnections(List<Connection> inputConnections) {
@@ -89,17 +53,18 @@ public class Neuron {
     }
 
 
-    public double generateOutput() {
+    public void generateOutput() {
 
         generateTotalInput();
 
         output = abstractActivationFunction.getOutput(totalInput);
-        return output;
     }
 
     public void generateTotalInput() {
-        inputConnections.forEach(inputConnections ->
-                totalInput += inputConnections.getWeightedInput()
+        totalInput = 0;
+
+        inputConnections.forEach(inputConnection ->
+                totalInput += inputConnection.getWeightedInput()
         );
     }
 

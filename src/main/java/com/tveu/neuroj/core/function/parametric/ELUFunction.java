@@ -2,7 +2,7 @@ package com.tveu.neuroj.core.function.parametric;
 
 public class ELUFunction extends AbstractParametricFunction {
 
-    protected ELUFunction(double slope) {
+    public ELUFunction(double slope) {
         super(slope);
     }
 

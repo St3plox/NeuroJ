@@ -8,7 +8,7 @@ public class Matrix implements Iterable<Double> {
 
     private int cols;
 
-    protected final List<Double> matrix;
+    protected List<Double> matrix;
 
     public Matrix(int rows, int cols, double[][] arr) {
 
@@ -70,13 +70,27 @@ public class Matrix implements Iterable<Double> {
     }
 
 
-
     public boolean canMultiply(Matrix other) {
         return rows == other.cols;
     }
 
     public boolean canAdd(Matrix other) {
         return (rows == other.rows && cols == other.cols);
+    }
+
+    public int getElementsCount() {
+        return rows * cols;
+    }
+
+    public void dot(Matrix matrix) {
+        Matrix result = MatrixOperations.multiply(this, matrix);
+        this.matrix = result.matrix;
+        this.rows = result.rows;
+        this.cols = result.cols;
+    }
+
+    public void dot(double scalar) {
+        matrix.replaceAll(aDouble -> aDouble * scalar);
     }
 
     private int getIndex(int row, int col) {

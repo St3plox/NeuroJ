@@ -1,34 +1,28 @@
-package com.tveu.neuroj.core;
+package com.tveu.neuroj.nn;
 
+import com.tveu.neuroj.core.Layer;
 import com.tveu.neuroj.core.neuron.Neuron;
+import com.tveu.neuroj.nn.AbstractNeuralNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class NeuralNetwork {
+public class NeuralNetwork extends AbstractNeuralNetwork {
 
     private String label;
 
-    protected double output;
-
-    protected List<Layer> layers;
-
     public NeuralNetwork() {
-        layers = new ArrayList<>();
+        super();
     }
 
     public NeuralNetwork(List<Layer> layers) {
         this.layers = layers;
     }
 
-    public double getOutput() {
-        return output;
-    }
-
     public List<Layer> getLayers() {
-        return new ArrayList<>(layers);
+        return layers;
     }
 
     public void setLayers(List<Layer> layers) {
@@ -43,33 +37,11 @@ public class NeuralNetwork {
         this.label = label;
     }
 
-    public void addLayer(Layer layer) {
-
-        if (!layers.isEmpty()) {
-            layers.get(layers.size() - 1).connectAllNeuronsTo(layer);
-        }
-        layers.add(layer);
-    }
-
-    public void setInputVector(double[] inputVector) {
-        if (layers.isEmpty() ||
-                inputVector.length != layers.get(0).neurons.size()) {
-
-            throw new IllegalArgumentException("Neural network has no input layer" +
-                    " or input vector do not match with input Neurons amount");
-        }
-
-        int i = 0;
-        for (Neuron neuron : layers.get(0)) {
-            neuron.setTotalInput(inputVector[i]);
-            i++;
-        }
-    }
 
     public Optional<Layer> getFirstLayerByLabel(String label) {
 
         for (Layer layer : layers) {
-            if (Objects.equals(layer.label, label))
+            if (Objects.equals(layer.getLabel(), label))
                 return Optional.of(layer);
         }
 
@@ -81,24 +53,33 @@ public class NeuralNetwork {
         List<Layer> result = new ArrayList<>();
 
         layers.forEach((layer -> {
-            if (layer.label.equals(label))
+            if (layer.getLabel().equals(label))
                 result.add(layer);
         }));
 
         return result;
     }
 
+    @Override
     public void calculateOutput() {
 
+        output = 0;
         for (Layer layer : layers) {
             for (Neuron neuron : layer) {
                 neuron.generateOutput();
+                neuron.setDelta(0);
             }
         }
 
         layers.get(layers.size() - 1).forEach(
                 neuron -> output += neuron.getOutput()
         );
+
+    }
+
+    @Override
+    public void setInputVector(double[] inputVector) {
+
     }
 
 }

@@ -1,10 +1,10 @@
 package com.tveu.neuroj.core.factory;
 
 import com.tveu.neuroj.core.Layer;
-import com.tveu.neuroj.core.NeuralNetwork;
+import com.tveu.neuroj.nn.NeuralNetwork;
 import com.tveu.neuroj.core.function.AbstractActivationFunction;
+import com.tveu.neuroj.core.function.LinearFunction;
 import com.tveu.neuroj.core.function.SigmoidFunction;
-import com.tveu.neuroj.core.neuron.InputNeuron;
 
 public class NeuralNetworkFactory {
 
@@ -19,7 +19,7 @@ public class NeuralNetworkFactory {
     }
 
     public NeuralNetworkFactory addInputLayer(int numberOfNeurons) {
-        return addLayer(INPUT_LAYER_LABEL, numberOfNeurons, new SigmoidFunction());
+        return addLayer(INPUT_LAYER_LABEL, numberOfNeurons, new LinearFunction());
     }
 
     public NeuralNetworkFactory addHiddenLayer(int numberOfNeurons, AbstractActivationFunction activationFunction) {
