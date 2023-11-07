@@ -2,7 +2,7 @@ package com.tveu.neuroj.core.train.learning;
 
 import com.tveu.neuroj.core.Connection;
 import com.tveu.neuroj.core.Layer;
-import com.tveu.neuroj.nn.NeuralNetwork;
+import com.tveu.neuroj.core.nn.NeuralNetwork;
 import com.tveu.neuroj.core.Weight;
 import com.tveu.neuroj.core.neuron.Neuron;
 

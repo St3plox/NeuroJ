@@ -1,28 +1,28 @@
-package com.tveu.neuroj.nn;
+package com.tveu.neuroj.core.nn;
 
 import com.tveu.neuroj.core.function.AbstractActivationFunction;
 import com.tveu.neuroj.maths.Matrix;
 import com.tveu.neuroj.maths.MatrixOperations;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MatrixNeuralNetwork extends AbstractNeuralNetwork {
 
-    private final List<Matrix> connectionWeights;
+    private List<Matrix> connectionWeights;
 
-    private final double[] input;
+    private double[] input;
 
-    private final AbstractActivationFunction activationFunction;
+    private AbstractActivationFunction activationFunction;
 
     public MatrixNeuralNetwork(List<Matrix> connectionWeights, double[] input, AbstractActivationFunction activationFunction) {
         super();
+
         this.connectionWeights = connectionWeights;
         this.input = input;
         this.activationFunction = activationFunction;
     }
 
-    public MatrixNeuralNetwork(List<Matrix> connectionWeights, int inputSize,  AbstractActivationFunction activationFunction) {
+    public MatrixNeuralNetwork(List<Matrix> connectionWeights, int inputSize, AbstractActivationFunction activationFunction) {
         super();
         input = new double[inputSize];
 
@@ -32,43 +32,38 @@ public class MatrixNeuralNetwork extends AbstractNeuralNetwork {
             connectionsSize += matrix.getElementsCount();
         }
 
-        if (connectionsSize != countTotalConnections())
-            throw new IllegalArgumentException("Amount of connections " +
-                    "is not equal to collection number" +
-                    " in fully connected neural network");
 
         this.connectionWeights = connectionWeights;
         this.activationFunction = activationFunction;
     }
 
 
-    public int countTotalConnections() {
-        int count = 0;
-
-        for (int i = 0; i < layers.size() - 1; i++) {
-            count += layers.get(i).getNeurons().size()
-                    * layers.get(i + 1).getNeurons().size();
-        }
-
-        return count;
-    }
-
+    @Override
     public void calculateOutput() {
         if (connectionWeights.isEmpty())
             throw new IllegalArgumentException("connectionWeights are empty");
 
-        Matrix inputMatrix = new Matrix(1, input.length, new double[][]{input});
+        Matrix currentInput = new Matrix(1, input.length, new double[][]{input});
 
-        Matrix sum = MatrixOperations.multiply(connectionWeights.get(0), (inputMatrix));
+        for (Matrix weights : connectionWeights) {
+            Matrix weightedSum = MatrixOperations.multiply(currentInput, weights);
 
-        double[] sumOut = new double[sum.getElementsCount()];
+            double[][] activatedValues = new double[weightedSum.getRows()][weightedSum.getCols()];
+            for (int i = 0; i < weightedSum.getRows(); i++) {
+                for (int j = 0; j < weightedSum.getCols(); j++) {
+                    activatedValues[i][j] = activationFunction.getOutput(weightedSum.getValue(i, j));
+                }
+            }
 
-        int i = 0;
-        for(double num : sum){
-            sumOut[i] = activationFunction.getOutput(num);
-            i++;
+            currentInput = new Matrix(activatedValues);
         }
-        Matrix out = new Matrix(1, sumOut.length, new double[][]{sumOut});
+
+        // Sum up the final result
+        output = 0;
+        for (double num : currentInput) {
+            output += num;
+        }
+
     }
 
     @Override

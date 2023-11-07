@@ -1,6 +1,6 @@
 package com.tveu.neuroj.core.train.learning;
 
-import com.tveu.neuroj.nn.NeuralNetwork;
+import com.tveu.neuroj.core.nn.NeuralNetwork;
 
 public abstract class LearningAlgorithm {
 

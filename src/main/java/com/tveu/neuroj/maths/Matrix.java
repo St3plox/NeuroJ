@@ -26,6 +26,20 @@ public class Matrix implements Iterable<Double> {
         this(rows, cols, new double[rows][cols]);
     }
 
+    public Matrix(double[][] arr) {
+        if (arr.length == 0 || arr[0].length == 0) {
+            throw new IllegalArgumentException("Input array must have non-zero dimensions");
+        }
+
+        this.rows = arr.length;
+        this.cols = arr[0].length;
+        matrix = new ArrayList<>(rows * cols);
+
+        Arrays.stream(arr)
+                .flatMapToDouble(Arrays::stream)
+                .forEach(matrix::add);
+    }
+
     public int getRows() {
         return rows;
     }

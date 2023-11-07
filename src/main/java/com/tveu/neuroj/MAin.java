@@ -1,6 +1,6 @@
 package com.tveu.neuroj;
 
-import com.tveu.neuroj.nn.NeuralNetwork;
+import com.tveu.neuroj.core.nn.NeuralNetwork;
 import com.tveu.neuroj.core.factory.NeuralNetworkFactory;
 import com.tveu.neuroj.core.function.TanhFunction;
 import com.tveu.neuroj.core.train.NeuralNetworkTrainer;

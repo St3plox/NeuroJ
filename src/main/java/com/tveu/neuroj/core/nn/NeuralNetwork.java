@@ -1,8 +1,7 @@
-package com.tveu.neuroj.nn;
+package com.tveu.neuroj.core.nn;
 
 import com.tveu.neuroj.core.Layer;
 import com.tveu.neuroj.core.neuron.Neuron;
-import com.tveu.neuroj.nn.AbstractNeuralNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +12,13 @@ public class NeuralNetwork extends AbstractNeuralNetwork {
 
     private String label;
 
+    protected List<Layer> layers;
+
+
     public NeuralNetwork() {
-        super();
+        layers = new ArrayList<>();
     }
+
 
     public NeuralNetwork(List<Layer> layers) {
         this.layers = layers;
@@ -37,6 +40,20 @@ public class NeuralNetwork extends AbstractNeuralNetwork {
         this.label = label;
     }
 
+    public void addLayer(Layer layer) {
+
+        if (!layers.isEmpty()) {
+            layers.get(layers.size() - 1).connectAllNeuronsTo(layer);
+        }
+        layers.add(layer);
+    }
+
+    public Layer getLayer(int index) {
+        if(index >= layers.size())
+            throw new IllegalArgumentException("Layer index is out of bounds");
+
+        return layers.get(index);
+    }
 
     public Optional<Layer> getFirstLayerByLabel(String label) {
 
