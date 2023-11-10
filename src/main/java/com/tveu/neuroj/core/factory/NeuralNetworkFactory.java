@@ -1,12 +1,12 @@
 package com.tveu.neuroj.core.factory;
 
 import com.tveu.neuroj.core.Layer;
-import com.tveu.neuroj.core.nn.NeuralNetwork;
 import com.tveu.neuroj.core.function.AbstractActivationFunction;
 import com.tveu.neuroj.core.function.LinearFunction;
 import com.tveu.neuroj.core.function.SigmoidFunction;
+import com.tveu.neuroj.core.nn.NeuralNetwork;
 
-public class NeuralNetworkFactory implements NeuralNetworkFactoryI{
+public class NeuralNetworkFactory implements NeuralNetworkFactoryI {
 
     public final static String INPUT_LAYER_LABEL = "INPUT";
     public final static String HIDDEN_LAYER_LABEL = "HIDDEN";
@@ -39,6 +39,14 @@ public class NeuralNetworkFactory implements NeuralNetworkFactoryI{
 
     public NeuralNetwork build() {
         return neuralNetwork;
+    }
+
+    NeuralNetworkFactory createDefaultNeuralNetwork() {
+        return new NeuralNetworkFactory()
+                .addInputLayer(3)
+                .addHiddenLayer(5, new SigmoidFunction())
+                .addHiddenLayer(5, new SigmoidFunction())
+                .addOutputLayer(1, new SigmoidFunction());
     }
 
 

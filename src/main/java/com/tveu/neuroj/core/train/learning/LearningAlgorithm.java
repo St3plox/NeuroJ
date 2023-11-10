@@ -1,6 +1,6 @@
 package com.tveu.neuroj.core.train.learning;
 
-import com.tveu.neuroj.core.nn.NeuralNetwork;
+import com.tveu.neuroj.core.nn.AbstractNeuralNetwork;
 
 public abstract class LearningAlgorithm {
 
@@ -29,5 +29,5 @@ public abstract class LearningAlgorithm {
         return learningRate;
     }
 
-    public abstract void optimizeWeights(NeuralNetwork neuralNetwork);
+    public abstract void optimizeWeights(AbstractNeuralNetwork neuralNetwork);
 }

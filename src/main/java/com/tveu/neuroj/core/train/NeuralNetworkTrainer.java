@@ -1,5 +1,6 @@
 package com.tveu.neuroj.core.train;
 
+import com.tveu.neuroj.core.nn.AbstractNeuralNetwork;
 import com.tveu.neuroj.core.nn.NeuralNetwork;
 import com.tveu.neuroj.core.train.learning.LearningAlgorithm;
 import com.tveu.neuroj.data.TrainingData;
@@ -12,7 +13,7 @@ import java.util.Map.Entry;
 public class NeuralNetworkTrainer {
 
 
-    private final NeuralNetwork neuralNetwork;
+    private final AbstractNeuralNetwork neuralNetwork;
 
     private final LearningAlgorithm learningAlgorithm;
 

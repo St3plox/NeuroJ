@@ -1,5 +1,7 @@
 package com.tveu.neuroj;
 
+import com.tveu.neuroj.core.factory.MatrixNeuralNetworkFactory;
+import com.tveu.neuroj.core.nn.MatrixNeuralNetwork;
 import com.tveu.neuroj.core.nn.NeuralNetwork;
 import com.tveu.neuroj.core.factory.NeuralNetworkFactory;
 import com.tveu.neuroj.core.function.TanhFunction;
@@ -18,6 +20,16 @@ public class MAin {
                 .addOutputLayer(1, new TanhFunction())
                 .build();
 
+        MatrixNeuralNetwork matrixNeuralNetwork = new MatrixNeuralNetworkFactory(3)
+                .addHiddenLayer(2, new TanhFunction())
+                .addOutputLayer(1, new TanhFunction())
+                .build();
+
+        double[] inputVector = new double[]{-1, -1, -1};
+        matrixNeuralNetwork.setInputVector(inputVector);
+        matrixNeuralNetwork.calculateOutput();
+        System.out.println(matrixNeuralNetwork.getOutput());
+/*
         double[][] trainingArray = new double[][]{
                 {-1, -1, -1},
                 {-1, -1, 1},
@@ -66,6 +78,6 @@ public class MAin {
             boolean isCorrect = Math.abs(output - validationResult[i]) < threshold;
 
             System.out.println(output + " " + isCorrect);
-        }
+        }*/
     }
 }

@@ -2,9 +2,11 @@ package com.tveu.neuroj.core.train.learning;
 
 import com.tveu.neuroj.core.Connection;
 import com.tveu.neuroj.core.Layer;
-import com.tveu.neuroj.core.nn.NeuralNetwork;
 import com.tveu.neuroj.core.Weight;
 import com.tveu.neuroj.core.neuron.Neuron;
+import com.tveu.neuroj.core.nn.AbstractNeuralNetwork;
+import com.tveu.neuroj.core.nn.MatrixNeuralNetwork;
+import com.tveu.neuroj.core.nn.NeuralNetwork;
 
 public class BackPropagation extends LearningAlgorithm {
 
@@ -16,8 +18,22 @@ public class BackPropagation extends LearningAlgorithm {
         super(delta, learningRate);
     }
 
-    @Override
-    public void optimizeWeights(NeuralNetwork neuralNetwork) {
+
+    public void optimizeWeights(AbstractNeuralNetwork neuralNetwork) {
+        if (neuralNetwork.getClass() == NeuralNetwork.class || neuralNetwork instanceof NeuralNetwork) {
+            optimizeDefaultWeights((NeuralNetwork) neuralNetwork);
+
+        } else if (neuralNetwork.getClass() == MatrixNeuralNetwork.class || neuralNetwork instanceof MatrixNeuralNetwork) {
+            optimizeMatrixWeights((MatrixNeuralNetwork) neuralNetwork);
+        } else {
+            throw new RuntimeException("Optimize method for this class is not defined");
+        }
+    }
+
+    private void optimizeMatrixWeights(MatrixNeuralNetwork neuralNetwork) {
+    }
+
+    private void optimizeDefaultWeights(NeuralNetwork neuralNetwork) {
 
         int layersCount = neuralNetwork.getLayers().size();
 

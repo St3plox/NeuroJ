@@ -1,26 +1,33 @@
 package com.tveu.neuroj.core.factory;
 
 import com.tveu.neuroj.core.function.AbstractActivationFunction;
+import com.tveu.neuroj.core.nn.MatrixNeuralNetwork;
 import com.tveu.neuroj.core.nn.NeuralNetwork;
 
 public class MatrixNeuralNetworkFactory implements NeuralNetworkFactoryI {
+
+    private final MatrixNeuralNetwork matrixNeuralNetwork;
+
+    public MatrixNeuralNetworkFactory(int inputSize) {
+        matrixNeuralNetwork = new MatrixNeuralNetwork(inputSize);
+    }
+
+
     @Override
-    public NeuralNetworkFactory addInputLayer(int numberOfNeurons) {
-        return null;
+    public MatrixNeuralNetworkFactory addHiddenLayer(int numberOfNeurons, AbstractActivationFunction activationFunction) {
+        matrixNeuralNetwork.addConnectionWeights(numberOfNeurons);
+        matrixNeuralNetwork.setActivationFunction(activationFunction);
+        return this;
     }
 
     @Override
-    public NeuralNetworkFactory addHiddenLayer(int numberOfNeurons, AbstractActivationFunction activationFunction) {
-        return null;
+    public MatrixNeuralNetworkFactory addOutputLayer(int numberOfNeurons, AbstractActivationFunction activationFunction) {
+        addHiddenLayer(numberOfNeurons, activationFunction);
+        return this;
     }
 
     @Override
-    public NeuralNetworkFactory addOutputLayer(int numberOfNeurons, AbstractActivationFunction activationFunction) {
-        return null;
-    }
-
-    @Override
-    public NeuralNetwork build() {
-        return null;
+    public MatrixNeuralNetwork build() {
+        return matrixNeuralNetwork;
     }
 }

@@ -4,27 +4,33 @@ import com.tveu.neuroj.core.function.AbstractActivationFunction;
 import com.tveu.neuroj.maths.Matrix;
 import com.tveu.neuroj.maths.MatrixOperations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class MatrixNeuralNetwork extends AbstractNeuralNetwork {
 
-    private List<Matrix> connectionWeights;
+    protected List<Matrix> connectionWeights;
 
-    private double[] input;
+    protected final double[] input;
 
-    private AbstractActivationFunction activationFunction;
+    protected AbstractActivationFunction activationFunction;
+
+    public MatrixNeuralNetwork(int inputSize) {
+        connectionWeights = new ArrayList<>();
+        input = new double[inputSize];
+    }
 
     public MatrixNeuralNetwork(List<Matrix> connectionWeights, double[] input, AbstractActivationFunction activationFunction) {
-        super();
-
         this.connectionWeights = connectionWeights;
         this.input = input;
         this.activationFunction = activationFunction;
     }
 
     public MatrixNeuralNetwork(List<Matrix> connectionWeights, int inputSize, AbstractActivationFunction activationFunction) {
-        super();
-        input = new double[inputSize];
+
+        this(inputSize);
 
         int connectionsSize = 0;
 
@@ -37,6 +43,35 @@ public class MatrixNeuralNetwork extends AbstractNeuralNetwork {
         this.activationFunction = activationFunction;
     }
 
+    public AbstractActivationFunction getActivationFunction() {
+        return activationFunction;
+    }
+
+    public void setActivationFunction(AbstractActivationFunction activationFunction) {
+        this.activationFunction = activationFunction;
+    }
+
+    public void addConnectionWeights(double[] values) {
+        int lastNeuronsNumber = (connectionWeights.isEmpty()) ? input.length :
+                connectionWeights.get(connectionWeights.size() - 1).getElementsCount();
+
+        if (values.length * lastNeuronsNumber < lastNeuronsNumber)
+            throw new IllegalArgumentException("weights amount must be greater or equal" +
+                    " than neurons number of the last layer");
+
+        Matrix valuesVector = new Matrix(new double[][]{values});
+        connectionWeights.add(valuesVector);
+    }
+
+    public void addConnectionWeights(int neuronsCount) {
+
+        int lastNeuronsNumber = (connectionWeights.isEmpty()) ? input.length :
+                connectionWeights.get(connectionWeights.size() - 1).getElementsCount();
+
+        double[] values = new double[neuronsCount * lastNeuronsNumber];
+        Arrays.setAll(values, v -> new Random().nextDouble() * 0.5);
+        addConnectionWeights(values);
+    }
 
     @Override
     public void calculateOutput() {
